@@ -2,17 +2,17 @@
 # https://github.com/jstn/docker-unifi-video/blob/master/Dockerfile (0e8dbcc)
 
 # Xenial Xerus
-FROM phusion/baseimage:0.10.2
+FROM phusion/baseimage:0.11
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN curl -sS https://dl.ubnt.com/firmwares/ufv/v3.9.12/unifi-video.Ubuntu16.04_amd64.v3.9.12.deb > /tmp/unifi-video.deb
-
-# Bring in the latest and greatest
+# Bring in the latest and greatest dependencies
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
-
-# Install unifi-video dependencies and the core package itself
 RUN apt-get install -y mongodb-server openjdk-8-jre-headless jsvc sudo
+
+# Install unifi-video itself
+RUN curl -sS https://dl.ubnt.com/firmwares/ufv/v3.10.1/unifi-video.Ubuntu16.04_amd64.v3.10.1.deb > /tmp/unifi-video.deb
+
 RUN dpkg -i /tmp/unifi-video.deb && rm /tmp/unifi-video.deb
 RUN apt-get update && apt-get -f install
 
